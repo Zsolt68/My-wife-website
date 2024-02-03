@@ -475,6 +475,11 @@ http://www.tooplate.com/view/2098-health
     padding-bottom: 150px;
   }
 
+  #referral {
+    padding-top: 150px;
+    padding-bottom: 150px;
+  }
+
   .profile img,
   .profile figcaption {
     display: inline-block;
