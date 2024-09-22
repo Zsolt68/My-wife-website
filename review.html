@@ -49,7 +49,7 @@
                     <span class="date-icon"><i class="fa fa-calendar-plus-o"></i> 12:00 PM - 8:00 PM
                         (Monday & Friday)</span>
                     <span class="email-icon"><i class="fa fa-envelope-o"></i> <a
-                            href="#">angelatherapy4@gmail.com</a></span>
+                            href="mailto:angelatherapy4@gmail.com">angelatherapy4@gmail.com</a></span>
                 </div>
 
             </div>
@@ -106,6 +106,42 @@
                     style="border: solid 1px lightgray; background: #fffafa; margin-bottom: 10px;">
 
                 </div>
+
+            </div>
+        </div>
+    </section>
+    <!--Create Review -->
+    <section id="appointment" data-stellar-background-ratio="3"
+        style="background-position: 0px 494px; margin-top: 40px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <!-- CONTACT FORM HERE -->
+                    <form id="dataForm">
+                        <div class="wow fadeInUp animated" data-wow-delay="0.8s"
+                            style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInUp;">
+                            <div class="col-md-6 col-sm-6">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="fName" name="name" placeholder="Full Name">
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="Your Email">
+                            </div>
+                            <div class="col-md-12 col-sm-12">
+                                <label for="Message">Comments</label>
+                                <textarea class="form-control" rows="5" id="message" name="message"
+                                    placeholder="Message"></textarea>
+                                <button type="submit" class="form-control" id="cf-submit" name="submit">Submit
+                                    Button</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <!-- <img src="./images/review.png" class="img-responsive" alt=""> -->
+                </div>
             </div>
         </div>
     </section>
@@ -118,7 +154,7 @@
                     <div class="footer-thumb">
                         <h4 class="wow fadeInUp" data-wow-delay="0.4s">Contact Info</h4>
                         <div class="contact-info">
-                            <p><i class="fa fa-phone"></i>087-443-7504</p>
+                            <p><i class="fa fa-phone"></i><a href="tel:+353874437504"> 087-443-7504</a></p>
                             <p> <a href="https://www.instagram.com/angelafoldes4/" target="_blank"><img
                                         style="width: 40px; height:40px" src="./images/instagram.png" />
                                     Connect with me on Instagram</a></p>
@@ -161,7 +197,70 @@
     <script src="js/smoothscroll.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/custom.js"></script>
-    <script src="./js/sheetdb.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        fetch('https://sheetdb.io/api/v1/3ylv62a5bookw')
+            .then((response) => response.json())
+            .then((data) => {
+                const resultsDiv = document.getElementById('reviews');
+                let innerHtml = '';  // Use 'let' instead of 'var'
+                data.forEach(item => {
+                    if (item.visible.toLowerCase() === 'true') {
+                        innerHtml += `<div class="news-info">
+                                    <span style="font-size: 16px; font-weight: 600;">${item.review}</span>
+                                    <p>-${item.fName} (${item.date})</p>
+                                  </div><hr>`;
+                    }
+                });
+                resultsDiv.innerHTML = innerHtml;
+            })
+            .catch((error) => console.error('Error:', error));
+
+        document.getElementById('dataForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('fName').value;
+            const message = document.getElementById('message').value;
+
+            fetch('https://sheetdb.io/api/v1/3ylv62a5bookw', {
+                method: 'POST',
+                body: JSON.stringify({
+                    visible: 'false',
+                    email: email,
+                    fName: name,
+                    date: new Date().toISOString().split('T')[0], // Use ISO date format
+                    review: message
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then((response) => response.json())
+                .then(() => {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Your review has been submitted!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    // Clear form fields
+                    document.getElementById('email').value = '';
+                    document.getElementById('fName').value = '';
+                    document.getElementById('message').value = '';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'There was an issue submitting your review.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
+        });
+    </script>
+
 </body>
 
 </html>
