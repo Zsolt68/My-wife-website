@@ -205,7 +205,7 @@
         fetch('https://sheetdb.io/api/v1/3ylv62a5bookw')
             .then((response) => response.json())
             .then((data) => {
-                //sort data by date descending
+                //sort data by date descending order
                 data.sort((a, b) => new Date(b.date) - new Date(a.date));
                 const resultsDiv = document.getElementById('reviews');
                 let innerHtml = '';  // Use 'let' instead of 'var'
