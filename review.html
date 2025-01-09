@@ -206,8 +206,8 @@
             .then((response) => response.json())
             .then((data) => {
                 console.log("🚀 ~ .then ~ data:", data)
-                //sort data by date descending order
-                data.sort((a, b) => new Date(b.date) - new Date(a.date));
+               //reverse the data array
+                data.reverse();
                 const resultsDiv = document.getElementById('reviews');
                 let innerHtml = '';  // Use 'let' instead of 'var'
                 data.forEach(item => {
