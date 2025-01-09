@@ -211,7 +211,7 @@
                 const resultsDiv = document.getElementById('reviews');
                 let innerHtml = '';  // Use 'let' instead of 'var'
                 data.forEach(item => {
-                    if (item.visible.toLowerCase() === 'true') {
+                    if (item.visible.trim().toLowerCase() === 'true') {
                         innerHtml += `<div class="news-info">
                                     <span style="font-size: 16px; font-weight: 600;">${item.review}</span>
                                     <p>-${item.fName} (${item.date})</p>
